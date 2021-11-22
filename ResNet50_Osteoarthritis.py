@@ -10,6 +10,8 @@ from keras.models import Sequential
 import numpy as np
 import matplotlib.pyplot as plt
 from keras import optimizers
+from datetime import datetime
+from keras.callbacks import ModelCheckpoint
 
 
 
@@ -33,7 +35,7 @@ valid_path = 'C:/Users/anton/Desktop/MSc Data Science/Data Systems Project/DataS
 test_path  = 'C:/Users/anton/Desktop/MSc Data Science/Data Systems Project/DataSet/KneeXrayData/ClsKLData/kneeKL224/test'
 
 
-train_datagen = ImageDataGenerator(
+train = ImageDataGenerator(
     rotation_range=40,
     width_shift_range=0.2,
     height_shift_range=0.2,
@@ -41,7 +43,7 @@ train_datagen = ImageDataGenerator(
     horizontal_flip=True,
     fill_mode='nearest')
 
-test_datagen = ImageDataGenerator(
+test = ImageDataGenerator(
     rotation_range=40,
     width_shift_range=0.2,
     height_shift_range=0.2,
@@ -50,28 +52,23 @@ test_datagen = ImageDataGenerator(
     horizontal_flip=True,
     fill_mode='nearest')
 
-train_set = train_datagen.flow_from_directory(train_path,
+train_set = train.flow_from_directory(train_path,
                                                  target_size = (224, 224),
                                                  batch_size = 32,
                                                  class_mode = 'categorical')
 
 
 
-test_set = test_datagen.flow_from_directory(test_path,
+test_set = test.flow_from_directory(test_path,
                                             target_size = (224, 224),
                                             batch_size = 32,
                                             class_mode = 'categorical')
 
 
-from datetime import datetime
-from keras.callbacks import ModelCheckpoint
 
+check = ModelCheckpoint(filepath='Res.h5', verbose=2, save_best_only=True)
 
-
-checkpoint = ModelCheckpoint(filepath='Res.h5',
-                               verbose=2, save_best_only=True)
-
-callbacks = [checkpoint]
+callbacks = [check]
 
 start = datetime.now()
 
