@@ -52,17 +52,11 @@ test = ImageDataGenerator(
     horizontal_flip=True,
     fill_mode='nearest')
 
-train_set = train.flow_from_directory(train_path,
-                                                 target_size = (224, 224),
-                                                 batch_size = 32,
-                                                 class_mode = 'categorical')
+train_set = train.flow_from_directory(train_path, target_size = (224, 224), batch_size = 32, class_mode = 'categorical')
 
 
 
-test_set = test.flow_from_directory(test_path,
-                                            target_size = (224, 224),
-                                            batch_size = 32,
-                                            class_mode = 'categorical')
+test_set = test.flow_from_directory(test_path, target_size = (224, 224), batch_size = 32, class_mode = 'categorical')
 
 
 
