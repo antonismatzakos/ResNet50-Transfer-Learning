@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
+import tensorflow
+from tensorflow import keras
+from keras.layers import Input, Lambda, Dense, Flatten
+from keras.models import Model
+from keras.preprocessing import image
+from keras.preprocessing.image import ImageDataGenerator
+from keras.models import Sequential
+import numpy as np
+import matplotlib.pyplot as plt
+from keras import optimizers
 
 
 
