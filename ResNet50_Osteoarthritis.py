@@ -1,38 +1,26 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
-
-
-
-# In[3]:
 
 
 ResNet50_model = tensorflow.keras.applications.ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3), classes=5)
 
-for layers in ResNet50_model.layers:
-    layers.trainable=False
+
+#for layers in ResNet50_model.layers:
+#    layers.trainable=False
+#res = Flatten()(ResNet50_model.output)
+#res = Dense(256,activation='relu')(res)
+res = Dense(5,activation='softmax')(res)
+model = Model(inputs=ResNet50_model.input, outputs=res)
 
 
-resnet50_x = Flatten()(ResNet50_model.output)
-resnet50_x = Dense(256,activation='relu')(resnet50_x)
-resnet50_x = Dense(5,activation='softmax')(resnet50_x)
-model = Model(inputs=ResNet50_model.input, outputs=resnet50_x)
-
-
-adam = optimizers.SGD(lr=0.001,momentum=0.7)
-model.compile(loss = 'categorical_crossentropy', optimizer=adam, metrics=['acc'])
-
-
-# In[4]:
+opt = optimizers.SGD(lr=0.001,momentum=0.7)
+model.compile(loss = 'categorical_crossentropy', optimizer=opt, metrics=['acc'])
 
 
 train_path = 'C:/Users/anton/Desktop/MSc Data Science/Data Systems Project/DataSet/KneeXrayData/ClsKLData/kneeKL224/train'
 valid_path = 'C:/Users/anton/Desktop/MSc Data Science/Data Systems Project/DataSet/KneeXrayData/ClsKLData/kneeKL224/val'
 test_path  = 'C:/Users/anton/Desktop/MSc Data Science/Data Systems Project/DataSet/KneeXrayData/ClsKLData/kneeKL224/test'
-
-
-# In[5]:
 
 
 train_datagen = ImageDataGenerator(
@@ -43,10 +31,6 @@ train_datagen = ImageDataGenerator(
     horizontal_flip=True,
     fill_mode='nearest')
 
-
-# In[6]:
-
-
 test_datagen = ImageDataGenerator(
     rotation_range=40,
     width_shift_range=0.2,
@@ -56,26 +40,17 @@ test_datagen = ImageDataGenerator(
     horizontal_flip=True,
     fill_mode='nearest')
 
-
-# In[7]:
-
-
 train_set = train_datagen.flow_from_directory(train_path,
                                                  target_size = (224, 224),
                                                  batch_size = 32,
                                                  class_mode = 'categorical')
 
 
-# In[8]:
-
 
 test_set = test_datagen.flow_from_directory(test_path,
                                             target_size = (224, 224),
                                             batch_size = 32,
                                             class_mode = 'categorical')
-
-
-# In[10]:
 
 
 from datetime import datetime
@@ -104,7 +79,6 @@ print("Training time: ", duration)
 
 
 
-
 # Confution Matrix and Classification Report
 Y_pred = model.predict_generator(test_set, 1656 // 32+1)
 y_pred = np.argmax(Y_pred, axis=1)
@@ -113,9 +87,6 @@ print(confusion_matrix(test_set.classes, y_pred))
 print('Classification Report')
 target_names = ['0','1','2','3','4']
 print(classification_report(test_set.classes, y_pred, target_names=target_names))
-
-
-# In[22]:
 
 
 _# Plot training & validation loss values
