@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
 import tensorflow
 from tensorflow import keras
 from keras.layers import Input, Lambda, Dense, Flatten
@@ -18,10 +16,10 @@ from keras.callbacks import ModelCheckpoint
 ResNet50_model = tensorflow.keras.applications.ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3), classes=5)
 
 
-#for layers in ResNet50_model.layers:
-#    layers.trainable=False
-#res = Flatten()(ResNet50_model.output)
-#res = Dense(256,activation='relu')(res)
+for layers in ResNet50_model.layers:
+    layers.trainable=False
+res = Flatten()(ResNet50_model.output)
+res = Dense(256,activation='relu')(res)
 res = Dense(5,activation='softmax')(res)
 model = Model(inputs=ResNet50_model.input, outputs=res)
 
@@ -66,14 +64,7 @@ callbacks = [check]
 
 start = datetime.now()
 
-model_history=model.fit_generator(
-  train_set,
-  validation_data=test_set,
-  epochs=250,
-  steps_per_epoch=25,
-  validation_steps=32,
-    callbacks=callbacks ,verbose=2)
-
+model_history=model.fit_generator(train_set, validation_data=test_set, epochs=250, steps_per_epoch=25, validation_steps=32, callbacks=callbacks ,verbose=2)
 
 duration = datetime.now() - start
 print("Training time: ", duration)
