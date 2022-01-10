@@ -16,8 +16,8 @@ from keras.callbacks import ModelCheckpoint
 ResNet50_model = tensorflow.keras.applications.ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3), classes=5)
 
 
-for layers in ResNet50_model.layers:
-    layers.trainable=False
+#for layers in ResNet50_model.layers:
+#    layers.trainable=False
 res = Flatten()(ResNet50_model.output)
 res = Dense(256,activation='relu')(res)
 res = Dense(5,activation='softmax')(res)
@@ -41,14 +41,7 @@ train = ImageDataGenerator(
     horizontal_flip=True,
     fill_mode='nearest')
 
-test = ImageDataGenerator(
-    rotation_range=40,
-    width_shift_range=0.2,
-    height_shift_range=0.2,
-    shear_range=0.2,
-    
-    horizontal_flip=True,
-    fill_mode='nearest')
+test = ImageDataGenerator()
 
 train_set = train.flow_from_directory(train_path, target_size = (224, 224), batch_size = 32, class_mode = 'categorical')
 
