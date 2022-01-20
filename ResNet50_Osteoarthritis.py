@@ -24,7 +24,7 @@ res = Dense(5,activation='softmax')(res)
 model = Model(inputs=ResNet50_model.input, outputs=res)
 
 
-opt = optimizers.SGD(lr=0.001,momentum=0.7)
+opt = optimizers.SGD(lr=0.00001,momentum=0.7)
 model.compile(loss = 'categorical_crossentropy', optimizer=opt, metrics=['acc'])
 
 
